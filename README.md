@@ -1,5 +1,7 @@
 # Румикуб · Таймер для Android
 
+[Скачать APK 1.3](https://github.com/fadeevviktor-commits/rummikub-timer/raw/refs/heads/main/downloads/rummikub-timer-v1.3.apk) · Android 8.0+
+
 Нативное приложение на Java, Android 8.0 и новее, без сторонних библиотек и разрешения на Интернет.
 
 ## Возможности
