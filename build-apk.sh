@@ -8,10 +8,11 @@ PLATFORM="$ANDROID_SDK_ROOT/platforms/android-35/android.jar"
 OUT="$PWD/app/build/manual"
 mkdir -p "$OUT/classes" "$OUT/tests" "$OUT/dex" "$OUT/apk"
 export PATH="$JAVA_HOME/bin:$PATH"
-javac -encoding UTF-8 -d "$OUT/tests" app/src/main/java/ru/tileclock/TurnTimer.java app/src/main/java/ru/tileclock/GameLayoutPlan.java app/src/main/java/ru/tileclock/SetupLayoutPlan.java tests/*.java
+javac -encoding UTF-8 -d "$OUT/tests" app/src/main/java/ru/tileclock/TurnTimer.java app/src/main/java/ru/tileclock/GameLayoutPlan.java app/src/main/java/ru/tileclock/SetupLayoutPlan.java app/src/main/java/ru/tileclock/PlayerOrder.java tests/*.java
 java -cp "$OUT/tests" TurnTimerTest
 java -cp "$OUT/tests" GameLayoutTest
 java -cp "$OUT/tests" SetupLayoutTest
+java -cp "$OUT/tests" PlayerOrderTest
 javac --release 17 -encoding UTF-8 -classpath "$PLATFORM" -d "$OUT/classes" app/src/main/java/ru/tileclock/*.java
 jar --create --file "$OUT/classes.jar" -C "$OUT/classes" .
 "$BUILD_TOOLS/d8" --lib "$PLATFORM" --min-api 26 --output "$OUT/dex" "$OUT/classes.jar"
@@ -23,7 +24,7 @@ s=Path('app/src/main/AndroidManifest.xml').read_text()
 s=s.replace('<manifest ', '<manifest package="ru.tileclock" ', 1)
 Path(sys.argv[1]).write_text(s)
 PY
-"$BUILD_TOOLS/aapt2" link -o "$OUT/apk/unsigned.apk" --manifest "$OUT/AndroidManifest.xml" -I "$PLATFORM" --min-sdk-version 26 --target-sdk-version 35 --version-code 4 --version-name 1.3 "$OUT/resources.zip"
+"$BUILD_TOOLS/aapt2" link -o "$OUT/apk/unsigned.apk" --manifest "$OUT/AndroidManifest.xml" -I "$PLATFORM" --min-sdk-version 26 --target-sdk-version 35 --version-code 5 --version-name 1.4 "$OUT/resources.zip"
 python3 - "$OUT" <<'PY'
 import sys, zipfile
 from pathlib import Path

@@ -1,35 +1,28 @@
 package ru.tileclock;
 
-/** Header, player count, player editor, time options, sound, start/rules. */
+/** Body coordinates and pinned footer, in usable-window dp. */
 public final class SetupLayoutPlan {
-    public final GameLayoutPlan.Box[] boxes=new GameLayoutPlan.Box[6];
+    public final GameLayoutPlan.Box[] boxes=new GameLayoutPlan.Box[7];
     public final int columns;
+    public final float bodyHeight, viewport;
     public SetupLayoutPlan(float width,float height,int players,boolean keyboard) {
         float pad=width<360?12:20, gap=6, edge=8, right=width-pad;
-        boolean landscape=width>height;
-        columns=width>=600 || (!landscape && height<580)?2:1;
+        viewport=Math.max(0,height-72);
+        columns=width>=600 || height<740?2:1;
+        boxes[5]=new GameLayoutPlan.Box(pad,height-64,right,height-8);
         if(keyboard) {
-            for(int i=0;i<6;i++) boxes[i]=new GameLayoutPlan.Box(pad,edge,right,edge);
-            boxes[2]=new GameLayoutPlan.Box(pad,edge,right,height-edge-56-gap);
-            boxes[5]=new GameLayoutPlan.Box(pad,height-edge-56,right,height-edge);
-        } else if(landscape) {
-            float mid=width*.5f;
-            boxes[0]=new GameLayoutPlan.Box(pad,edge,right,edge+48);
-            float top=edge+48+gap;
-            boxes[1]=new GameLayoutPlan.Box(pad,top,mid-gap,top+48);
-            boxes[2]=new GameLayoutPlan.Box(pad,top+48+gap,mid-gap,height-edge);
-            boxes[3]=new GameLayoutPlan.Box(mid+gap,top,right,top+72);
-            boxes[4]=new GameLayoutPlan.Box(mid+gap,top+72+gap,right,top+72+gap+48);
-            boxes[5]=new GameLayoutPlan.Box(mid+gap,height-edge-56,right,height-edge);
+            for(int i:new int[]{0,1,3,4,6})boxes[i]=new GameLayoutPlan.Box(pad,0,right,0);
+            float editor=((players+columns-1)/columns)*56;
+            bodyHeight=Math.max(viewport,editor+16);
+            boxes[2]=new GameLayoutPlan.Box(pad,edge,right,edge+editor);
         } else {
-            float spare=Math.max(0,height-2*edge-5*gap-48-48-72-48-56);
-            float desired=(float)Math.ceil(players/(double)columns)*56;
-            float editor=Math.min(spare,desired);
-            float extra=Math.max(0,spare-editor);
-            float[] heights={48+extra*.35f,48,editor,72,48,56};
+            float editor=((players+columns-1)/columns)*56;
+            float fixed=2*edge+5*gap+48+editor+64+72+48;
+            float header=Math.max(72,Math.min(160,viewport-fixed));
+            bodyHeight=Math.max(viewport,header+fixed);
+            float[] heights={header,48,editor,72,48,56,64};
             float y=edge;
-            for(int i=0;i<6;i++) {
-                if(i==5)y=height-edge-56;
+            for(int i:new int[]{0,1,2,6,3,4}) {
                 boxes[i]=new GameLayoutPlan.Box(pad,y,right,y+heights[i]); y+=heights[i]+gap;
             }
         }

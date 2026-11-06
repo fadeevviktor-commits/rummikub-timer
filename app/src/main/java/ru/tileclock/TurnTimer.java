@@ -6,10 +6,11 @@ public final class TurnTimer {
     public int players, seconds, player, turn = 1;
     public State state = State.READY;
     private long deadline, remaining;
-    public TurnTimer(int players, int seconds) {
-        if (players < 2 || players > 4 || (seconds != 30 && seconds != 60 && seconds != 90 && seconds != 120))
+    public TurnTimer(int players, int seconds) { this(players,seconds,0); }
+    public TurnTimer(int players, int seconds, int firstPlayer) {
+        if (firstPlayer < 0 || firstPlayer >= players || players < 2 || players > 4 || (seconds != 30 && seconds != 60 && seconds != 90 && seconds != 120))
             throw new IllegalArgumentException("Invalid game settings");
-        this.players = players; this.seconds = seconds; remaining = seconds * 1000L;
+        this.players = players; this.seconds = seconds; this.player = firstPlayer; remaining = seconds * 1000L;
     }
     public long remaining(long now) { return state == State.RUNNING ? Math.max(0, deadline - now) : remaining; }
     public int displayedSeconds(long now) { return (int)((remaining(now) + 999) / 1000); }
