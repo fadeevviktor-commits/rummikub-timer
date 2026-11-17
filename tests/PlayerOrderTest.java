@@ -4,6 +4,17 @@ import ru.tileclock.TurnTimer;
 public class PlayerOrderTest {
     static void check(boolean b,String message){if(!b)throw new AssertionError(message);}
     public static void main(String[] args){
+        for(int count=2;count<=4;count++)for(int from=0;from<count;from++)for(int to=0;to<count;to++){
+            String[] names={"Анна","Миша","Катя","Саша"};int[] faces={0,1,2,3};
+            java.util.List<String> expected=new java.util.ArrayList<>(java.util.Arrays.asList(names).subList(0,count));
+            String moved=expected.remove(from);expected.add(to,moved);
+            PlayerOrder.move(names,faces,count,from,to);
+            for(int i=0;i<count;i++){
+                check(names[i].equals(expected.get(i)),"drop inserts instead of swapping endpoints");
+                check(names[i].equals(new String[]{"Анна","Миша","Катя","Саша"}[faces[i]]),"avatar follows its name");
+            }
+            for(int i=count;i<4;i++)check(faces[i]==i,"inactive players stay intact");
+        }
         for(int count=2;count<=4;count++) for(int first=0;first<count;first++) {
             for(int a=0;a<count;a++) for(int b=0;b<count;b++) {
                 String[] names={"Анна","Миша","Катя","Саша"}; int[] faces={12,17,22,23};

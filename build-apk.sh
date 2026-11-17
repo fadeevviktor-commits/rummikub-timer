@@ -24,7 +24,7 @@ s=Path('app/src/main/AndroidManifest.xml').read_text()
 s=s.replace('<manifest ', '<manifest package="ru.tileclock" ', 1)
 Path(sys.argv[1]).write_text(s)
 PY
-"$BUILD_TOOLS/aapt2" link -o "$OUT/apk/unsigned.apk" --manifest "$OUT/AndroidManifest.xml" -I "$PLATFORM" --min-sdk-version 26 --target-sdk-version 35 --version-code 5 --version-name 1.4 "$OUT/resources.zip"
+"$BUILD_TOOLS/aapt2" link -o "$OUT/apk/unsigned.apk" --manifest "$OUT/AndroidManifest.xml" -I "$PLATFORM" --min-sdk-version 26 --target-sdk-version 35 --version-code 6 --version-name 1.5 "$OUT/resources.zip"
 python3 - "$OUT" <<'PY'
 import sys, zipfile
 from pathlib import Path

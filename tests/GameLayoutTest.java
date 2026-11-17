@@ -18,8 +18,9 @@ public class GameLayoutTest {
                 }
             }
             check(boxes[0].bottom-boxes[0].top>=48,"settings touch target");
-            check(boxes[7].bottom-boxes[7].top>=48,"footer touch targets");
-            check(boxes[4].bottom-boxes[4].top>=48,"timer touch target");
+            check(boxes.length==6,"only six persistent groups");
+            check(boxes[5].bottom-boxes[5].top>=48,"pause touch target");
+            check(boxes[3].bottom-boxes[3].top>=120,"timer remains readable and tappable");
             count++;
         }
         System.out.println("PASS: all game controls fit in "+count+" portrait/landscape window sizes");
